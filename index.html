@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartMeds - Medicine Reminder & Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="login-page" class="page active">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <img src="./smartmeds-logo.jpg" alt="SmartMeds Logo" class="login-logo">
+                    <h1>SmartMeds</h1>
+                    <p>Your Personal Medicine Reminder</p>
+                </div>
+                <form id="login-form" class="login-form">
+                    <div class="form-group">
+                        <label for="email">Email or Username</label>
+                        <input type="text" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="remember" checked>
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                </form>
+                <div class="login-footer">
+                    <p>Don't have an account? <a href="#signup">Sign Up</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app-container" class="app-container" style="display: none;">
+        <!-- Header/Navigation -->
+        <header class="header">
+            <div class="header-left">
+                <img src="./smartmeds-logo.jpg" alt="SmartMeds" class="logo">
+                <h1>SmartMeds</h1>
+            </div>
+            <nav class="nav-menu">
+                <a href="#dashboard" class="nav-link active" data-page="dashboard">Dashboard</a>
+                <a href="#medicines" class="nav-link" data-page="medicines">Medicines</a>
+                <a href="#reminders" class="nav-link" data-page="reminders">Reminders</a>
+                <a href="#family" class="nav-link" data-page="family">Family & Doctors</a>
+                <a href="#profile" class="nav-link" data-page="profile">Profile</a>
+            </nav>
+            <div class="header-right">
+                <div class="user-menu">
+                    <div class="user-avatar" id="user-avatar">JD</div>
+                    <div class="dropdown-menu">
+                        <a href="#profile">My Profile</a>
+                        <a href="#settings">Settings</a>
+                        <button id="logout-btn" class="logout-btn">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Page -->
+        <div id="dashboard" class="page ">
+            <div class="page-header">
+                <h2>Dashboard</h2>
+                <p>Welcome back, <span id="dashboard-username">User</span>!</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Today's Medicines -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Today's Medicines</h3>
+                        <a href="#medicines" class="btn btn-sm btn-primary">Add Medicine</a>
+                    </div>
+                    <div id="today-medicines" class="medicines-list">
+                        <p class="empty-state">No medicines added yet</p>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="card">
+                    <h3>Quick Stats</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-label">Total Medicines</span>
+                            <span class="stat-value" id="total-medicines">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Family Members</span>
+                            <span class="stat-value" id="total-family">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Doctors</span>
+                            <span class="stat-value" id="total-doctors">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Reminders -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Upcoming Reminders</h3>
+                        <a href="#reminders" class="btn btn-sm btn-primary">View All</a>
+                    </div>
+                    <div id="upcoming-reminders" class="reminders-list">
+                        <p class="empty-state">No reminders set yet</p>
+                    </div>
+                </div>
+
+                <!-- Family Contacts -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Family & Doctors</h3>
+                        <a href="#family" class="btn btn-sm btn-primary">Manage</a>
+                    </div>
+                    <div id="dashboard-contacts" class="contacts-list">
+                        <p class="empty-state">No contacts added yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medicines Page -->
+        <div id="medicines" class="page">
+            <div class="page-header">
+                <h2>My Medicines</h2>
+                <a href="#medicines-add" class="btn btn-primary">+ Add Medicine</a>
+            </div>
+
+            <div id="medicines-list" class="medicines-grid">
+                <p class="empty-state">No medicines added yet. Click "Add Medicine" to get started.</p>
+            </div>
+        </div>
+
+        <!-- Add/Edit Medicine Page -->
+        <div id="medicines-add" class="page">
+            <div class="page-header">
+                <h2 id="medicine-form-title">Add Medicine</h2>
+                <a href="#medicines" class="btn btn-secondary">Back</a>
+            </div>
+
+            <div class="form-group">
+               <label for="medicine-image">Add Medicine Strip Image</label>
+                  <input type="file" id="medicine-image" accept="image/*" capture="environment">
+                    <img id="medicine-preview" src="" alt="Preview" style="display:none; width:120px; margin-top:10px; border-radius:8px;">
+            </div>
+
+            <div class="form-card">
+                <form id="medicine-form" class="form">
+                    <div class="form-group">
+                        <label for="med-name">Medicine Name *</label>
+                        <input type="text" id="med-name" placeholder="e.g., Paracetamol" required>
+                    </div>
+
+            <div class="form-group">
+                <label for="medicine-color">Select Medicine Color</label>
+                    <select id="medicine-color" name="medicine-color" required>
+                    <option value="">-- Select Color --</option>
+                    <option value="red" style="color: red;">🔴 Red</option>
+                    <option value="blue" style="color: blue;">🔵 Blue</option>
+                    <option value="green" style="color: green;">🟢 Green</option>
+                    <option value="yellow" style="color: goldenrod;">🟡 Yellow</option>
+                    <option value="orange" style="color: orange;">🟠 Orange</option>
+                    <option value="purple" style="color: purple;">🟣 Purple</option>
+                    <option value="white" style="color: gray;">⚪ White</option>
+                    <option value="brown" style="color: brown;">🟤 Brown</option>
+                    <option value="black" style="color: black;">⚫ Black</option>
+                    </select>
+            </div>
+
+                        <div class="form-group">
+                            <label for="med-shape">Shape</label>
+                            <select id="med-shape">
+                                <option value="round">Round</option>
+                                <option value="oval">Oval</option>
+                                <option value="capsule">Capsule</option>
+                                <option value="square">Square</option>
+                                <option value="tablet">Tablet</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="med-dosage">Dosage</label>
+                        <input type="text" id="med-dosage" placeholder="e.g., 500mg">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="med-frequency">Frequency *</label>
+                        <select id="med-frequency" required>
+                            <option value="">Select frequency</option>
+                            <option value="once">Once Daily</option>
+                            <option value="twice">Twice Daily</option>
+                            <option value="thrice">Thrice Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="med-timing">When to Take *</label>
+                        <select id="med-timing" required>
+                            <option value="">Select timing</option>
+                            <option value="before-breakfast">Before Breakfast</option>
+                            <option value="after-breakfast">After Breakfast</option>
+                            <option value="empty-stomach">Empty Stomach</option>
+                            <option value="before-lunch">Before Lunch</option>
+                            <option value="after-lunch">After Lunch</option>
+                            <option value="before-dinner">Before Dinner</option>
+                            <option value="after-dinner">After Dinner</option>
+                            <option value="bedtime">Bedtime</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="medicine-time">Select Time</label>
+                            <input type="time" id="medicine-time" name="medicine-time" required>
+                            <select id="ampm" name="ampm" required>
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                           </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="med-description">Description</label>
+                        <textarea id="med-description" placeholder="Any additional notes..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save Medicine</button>
+                        <a href="#medicines" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Reminders Page -->
+        <div id="reminders" class="page">
+            <div class="page-header">
+                <h2>Medicine Reminders</h2>
+            </div>
+
+            <div class="reminders-container">
+                <div id="reminders-list" class="reminders-timeline">
+                    <p class="empty-state">No reminders set yet. Add medicines to create reminders.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Family & Doctors Page -->
+        <div id="family" class="page">
+            <div class="page-header">
+                <h2>Family & Doctors</h2>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="family-members">Family Members</button>
+                <button class="tab-btn" data-tab="doctors">Doctors</button>
+            </div>
+
+            <!-- Family Members Tab -->
+            <div id="family-members" class="tab-content active">
+                <div class="tab-header">
+                    <h3>Family Members</h3>
+                    <a href="#family-add-member" class="btn btn-primary">+ Add Member</a>
+                </div>
+                <div id="family-members-list" class="contacts-grid">
+                    <p class="empty-state">No family members added yet.</p>
+                </div>
+            </div>
+
+            <!-- Doctors Tab -->
+            <div id="doctors" class="tab-content">
+                <div class="tab-header">
+                    <h3>Healthcare Providers</h3>
+                    <a href="#family-add-doctor" class="btn btn-primary">+ Add Doctor</a>
+                </div>
+                <div id="doctors-list" class="contacts-grid">
+                    <p class="empty-state">No doctors added yet.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Family Member Page -->
+        <div id="family-add-member" class="page">
+            <div class="page-header">
+                <h2>Add Family Member</h2>
+                <a href="#family" class="btn btn-secondary">Back</a>
+            </div>
+
+            <div class="form-card">
+                <form id="family-member-form" class="form">
+                    <div class="form-group">
+                        <label for="fm-name">Name *</label>
+                        <input type="text" id="fm-name" placeholder="Full name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fm-relation">Relation *</label>
+                        <select id="fm-relation" required>
+                            <option value="">Select relation</option>
+                            <option value="spouse">Spouse</option>
+                            <option value="parent">Parent</option>
+                            <option value="child">Child</option>
+                            <option value="sibling">Sibling</option>
+                            <option value="friend">Friend</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fm-phone">Phone Number</label>
+                        <input type="tel" id="fm-phone" placeholder="+1 (555) 000-0000">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fm-email">Email</label>
+                        <input type="email" id="fm-email" placeholder="email@example.com">
+                    </div>
+
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="fm-emergency">
+                        <label for="fm-emergency">Mark as Emergency Contact</label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Add Member</button>
+                        <a href="#family" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add Doctor Page -->
+        <div id="family-add-doctor" class="page">
+            <div class="page-header">
+                <h2>Add Doctor</h2>
+                <a href="#family" class="btn btn-secondary">Back</a>
+            </div>
+
+            <div class="form-card">
+                <form id="doctor-form" class="form">
+                    <div class="form-group">
+                        <label for="doc-name">Doctor Name *</label>
+                        <input type="text" id="doc-name" placeholder="Full name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doc-specialty">Specialty</label>
+                        <input type="text" id="doc-specialty" placeholder="e.g., Cardiologist">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doc-phone">Phone Number</label>
+                        <input type="tel" id="doc-phone" placeholder="+1 (555) 000-0000">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doc-email">Email</label>
+                        <input type="email" id="doc-email" placeholder="email@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doc-clinic">Clinic/Hospital</label>
+                        <input type="text" id="doc-clinic" placeholder="Clinic name">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Add Doctor</button>
+                        <a href="#family" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div id="profile" class="page">
+            <div class="page-header">
+                <h2>My Profile</h2>
+            </div>
+
+            <div class="profile-container">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="profile-avatar">JD</div>
+                        <div class="profile-info">
+                            <h3 id="profile-name">John Doe</h3>
+                            <p id="profile-email">john@example.com</p>
+                        </div>
+                        <a href="#profile-edit" class="btn btn-primary">Edit Profile</a>
+                    </div>
+
+                    <div class="profile-section">
+                        <h4>Account Information</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="label">Phone</span>
+                                <span class="value" id="profile-phone">Not set</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Date of Birth</span>
+                                <span class="value" id="profile-dob">Not set</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Blood Type</span>
+                                <span class="value" id="profile-blood">Not set</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Allergies</span>
+                                <span class="value" id="profile-allergies">Not set</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-section">
+                        <h4>Linked Contacts</h4>
+                        <div id="profile-contacts" class="contacts-preview">
+                            <p class="empty-state">No contacts linked yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Profile Page -->
+        <div id="profile-edit" class="page">
+            <div class="page-header">
+                <h2>Edit Profile</h2>
+                <a href="#profile" class="btn btn-secondary">Back</a>
+            </div>
+
+            <div class="form-card">
+                <form id="profile-form" class="form">
+                    <div class="form-group">
+                        <label for="prof-name">Full Name *</label>
+                        <input type="text" id="prof-name" placeholder="Your name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prof-email">Email *</label>
+                        <input type="email" id="prof-email" placeholder="your@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prof-phone">Phone Number</label>
+                        <input type="tel" id="prof-phone" placeholder="+1 (555) 000-0000">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prof-dob">Date of Birth</label>
+                        <input type="date" id="prof-dob">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prof-blood">Blood Type</label>
+                        <select id="prof-blood">
+                            <option value="">Select blood type</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prof-allergies">Allergies</label>
+                        <textarea id="prof-allergies" placeholder="List any allergies..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <a href="#profile" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
