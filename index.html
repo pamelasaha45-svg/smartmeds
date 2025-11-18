@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartMeds - Medicine Reminder & Tracker</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyAMyzabZU5viAxaOg-uIwMZmYMDsgO71Ss",
+        authDomain: "smartmeds-1.firebaseapp.com",
+        projectId: "smartmeds-1",
+        storageBucket: "smartmeds-1.firebasestorage.app",
+        messagingSenderId: "169671530750",
+        appId: "1:169671530750:web:7e6292d0c34a8cf3edadaf"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+    </script>
+
 </head>
 <body>
     <!-- Login Page -->
