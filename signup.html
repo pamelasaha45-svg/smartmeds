@@ -6,89 +6,76 @@
     <title>SmartMeds - Sign Up</title>
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Firebase SDKs (compat) -->
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
-
-    <script>
-      const firebaseConfig = {
-        apiKey: "AIzaSyAMyzabZU5viAxaOg-uIwMZmYMDsgO71Ss",
-        authDomain: "smartmeds-1.firebaseapp.com",
-        projectId: "smartmeds-1",
-        storageBucket: "smartmeds-1.firebasestorage.app",
-        messagingSenderId: "169671530750",
-        appId: "1:169671530750:web:7e6292d0c34a8cf3edadaf"
-      };
-
-      firebase.initializeApp(firebaseConfig);
-      const auth = firebase.auth();
-      const db = firebase.firestore();
-    </script>
+    <!-- Firebase Libraries -->
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"></script>
 </head>
-<body>
-    <div class="login-container">
-        <div class="login-card">
-            <div class="login-header">
-                <img src="smartmeds-logo.jpg" alt="SmartMeds Logo" class="login-logo">
-                <h1>SmartMeds</h1>
-                <p>Create your account</p>
-            </div>
+<body class="auth-body">
 
-            <form id="signup-form" class="login-form">
-                <div class="form-group">
-                    <label for="signup-name">Full Name</label>
-                    <input type="text" id="signup-name" placeholder="Enter your full name" required>
-                </div>
+    <div class="auth-container">
+        <div class="auth-card">
 
-                <div class="form-group">
-                    <label for="signup-email">Email</label>
-                    <input type="email" id="signup-email" placeholder="Enter your email" required>
-                </div>
+            <img src="smartmeds-logo.jpg" class="auth-logo" alt="SmartMeds Logo">
 
-                <div class="form-group">
-                    <label for="signup-password">Password</label>
-                    <input type="password" id="signup-password" placeholder="Minimum 6 characters" required>
-                </div>
+            <h2>Create Account 🎉</h2>
+            <p class="auth-subtitle">Start managing your medicines easily</p>
 
-                <button type="submit" class="btn btn-primary btn-full">Sign Up</button>
+            <form id="signupForm" class="auth-form">
+                <input type="text" id="name" placeholder="Full Name" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password (min 6 characters)" minlength="6" required>
+
+                <button type="submit" class="btn btn-primary auth-btn">Sign Up</button>
+
+                <p class="auth-link">
+                    Already have an account?
+                    <a href="signin.html">Sign in</a>
+                </p>
             </form>
 
-            <div class="login-footer">
-                <p>Already have an account? <a href="index.html">Login</a></p>
-            </div>
+            <p id="errorMessage" class="auth-error"></p>
+
         </div>
     </div>
 
-<script>
-document.getElementById("signup-form").addEventListener("submit", async function(e) {
-    e.preventDefault();
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAMyzabZU5viAxaOg-uIwMZmYMDsgO71Ss",
+            authDomain: "smartmeds-1.firebaseapp.com",
+            projectId: "smartmeds-1",
+            storageBucket: "smartmeds-1.firebasestorage.app",
+            messagingSenderId: "169671530750",
+            appId: "1:169671530750:web:7e6292d0c34a8cf3edadaf"
+        };
 
-    const name = document.getElementById("signup-name").value.trim();
-    const email = document.getElementById("signup-email").value.trim();
-    const password = document.getElementById("signup-password").value.trim();
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
 
-    if (!name || !email || password.length < 6) {
-        alert("Please fill all fields. Password must be at least 6 characters.");
-        return;
-    }
+        const form = document.getElementById("signupForm");
+        const errorMsg = document.getElementById("errorMessage");
 
-    try {
-        const userCred = await auth.createUserWithEmailAndPassword(email, password);
-        const uid = userCred.user.uid;
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
 
-        await db.collection("users").doc(uid).set({
-            name: name,
-            email: email,
-            createdAt: new Date().toISOString()
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+
+                    // Save display name in Firebase user profile
+                    user.updateProfile({ displayName: name });
+
+                    alert("Signup successful! Please login.");
+                    window.location.href = "signin.html"; // Go to Login Page
+                })
+                .catch((error) => {
+                    errorMsg.textContent = error.message;
+                });
         });
+    </script>
 
-        alert("Signup successful! You can now login.");
-        window.location.href = "index.html";
-    } catch (err) {
-        alert("Signup failed: " + err.message);
-    }
-});
-</script>
 </body>
 </html>
