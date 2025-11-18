@@ -5,67 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartMeds - Sign Up</title>
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Firebase SDKs (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyAMyzabZU5viAxaOg-uIwMZmYMDsgO71Ss",
+        authDomain: "smartmeds-1.firebaseapp.com",
+        projectId: "smartmeds-1",
+        storageBucket: "smartmeds-1.firebasestorage.app",
+        messagingSenderId: "169671530750",
+        appId: "1:169671530750:web:7e6292d0c34a8cf3edadaf"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+    </script>
 </head>
 <body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="smartmeds-logo.jpg" alt="SmartMeds Logo" class="login-logo">
+                <h1>SmartMeds</h1>
+                <p>Create your account</p>
+            </div>
 
-<div class="login-container">
+            <form id="signup-form" class="login-form">
+                <div class="form-group">
+                    <label for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" placeholder="Enter your full name" required>
+                </div>
 
-    <div class="login-card">
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" placeholder="Enter your email" required>
+                </div>
 
-        <div class="login-header">
-            <img src="smartmeds-logo.jpg" class="login-logo" alt="SmartMeds Logo">
-            <h2>Create Account</h2>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" placeholder="Minimum 6 characters" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">Sign Up</button>
+            </form>
+
+            <div class="login-footer">
+                <p>Already have an account? <a href="index.html">Login</a></p>
+            </div>
         </div>
-
-        <form id="signup-form" class="login-form">
-
-            <div class="form-group">
-                <label>Name *</label>
-                <input type="text" id="signup-name" placeholder="Enter your full name" required>
-            </div>
-
-            <div class="form-group">
-                <label>Email *</label>
-                <input type="email" id="signup-email" placeholder="your@email.com" required>
-            </div>
-
-            <div class="form-group">
-                <label>Password *</label>
-                <input type="password" id="signup-password" placeholder="Min 6 characters" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary btn-full">Sign Up</button>
-
-        </form>
-
-        <div class="login-footer">
-            <p>Already have an account? <a href="signin.html">Sign in</a></p>
-        </div>
-
     </div>
 
-</div>
-
 <script>
-document.getElementById("signup-form").addEventListener("submit", function(e){
+document.getElementById("signup-form").addEventListener("submit", async function(e) {
     e.preventDefault();
 
-    let name = document.getElementById("signup-name").value.trim();
-    let email = document.getElementById("signup-email").value.trim();
-    let password = document.getElementById("signup-password").value.trim();
+    const name = document.getElementById("signup-name").value.trim();
+    const email = document.getElementById("signup-email").value.trim();
+    const password = document.getElementById("signup-password").value.trim();
 
-    if(name === "" || email === "" || password.length < 6){
-        alert("Please fill all required fields properly.");
+    if (!name || !email || password.length < 6) {
+        alert("Please fill all fields. Password must be at least 6 characters.");
         return;
     }
 
-    let user = { name, email, password };
+    try {
+        const userCred = await auth.createUserWithEmailAndPassword(email, password);
+        const uid = userCred.user.uid;
 
-    localStorage.setItem("smartmeds_user", JSON.stringify(user));
-    alert("Account created! You can now login.");
-    window.location.href = "signin.html";
+        await db.collection("users").doc(uid).set({
+            name: name,
+            email: email,
+            createdAt: new Date().toISOString()
+        });
+
+        alert("Signup successful! You can now login.");
+        window.location.href = "index.html";
+    } catch (err) {
+        alert("Signup failed: " + err.message);
+    }
 });
 </script>
-
 </body>
 </html>
