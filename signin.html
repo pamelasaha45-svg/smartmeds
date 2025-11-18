@@ -4,474 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartMeds - Sign In</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 420px;
-        }
-
-        .signin-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            padding: 50px 40px;
-            animation: slideUp 0.6s ease-out;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .logo-section {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .logo-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            color: white;
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-        }
-
-        .logo-text {
-            font-size: 28px;
-            font-weight: 700;
-            color: #2d3748;
-            margin-bottom: 8px;
-        }
-
-        .logo-subtitle {
-            font-size: 14px;
-            color: #718096;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 8px;
-        }
-
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 15px;
-            font-size: 18px;
-            color: #cbd5e0;
-            pointer-events: none;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px 15px 12px 45px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            background: #f7fafc;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        input::placeholder {
-            color: #a0aec0;
-        }
-
-        .remember-forgot {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: #667eea;
-        }
-
-        .remember-me label {
-            margin: 0;
-            cursor: pointer;
-            color: #4a5568;
-            font-weight: 500;
-        }
-
-        .forgot-password {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-
-        .forgot-password:hover {
-            color: #764ba2;
-        }
-
-        .signin-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-            margin-bottom: 20px;
-        }
-
-        .signin-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
-        }
-
-        .signin-btn:active {
-            transform: translateY(0);
-        }
-
-        .signin-btn.loading {
-            opacity: 0.8;
-            pointer-events: none;
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 0.8s linear infinite;
-            margin-right: 8px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .signup-link {
-            text-align: center;
-            color: #4a5568;
-            font-size: 14px;
-        }
-
-        .signup-link a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 700;
-            transition: color 0.3s ease;
-        }
-
-        .signup-link a:hover {
-            color: #764ba2;
-        }
-
-        .error-message {
-            color: #e53e3e;
-            font-size: 13px;
-            margin-top: 6px;
-            display: none;
-            animation: shake 0.3s ease;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        .success-message {
-            background: #c6f6d5;
-            color: #22543d;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-            animation: slideDown 0.3s ease;
-        }
-
-        .success-message.show {
-            display: block;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .signin-card {
-                padding: 40px 25px;
-            }
-
-            .logo-text {
-                font-size: 24px;
-            }
-
-            .logo-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 28px;
-            }
-
-            input {
-                padding: 11px 12px 11px 40px;
-                font-size: 16px;
-            }
-
-            .signin-btn {
-                padding: 12px;
-                font-size: 15px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="signin-card">
-            <div class="logo-section">
-                <div class="logo-icon">💊</div>
-                <div class="logo-text">SmartMeds</div>
-                <div class="logo-subtitle">Your Health, Our Priority</div>
-            </div>
 
-            <div class="success-message" id="successMessage">
-                ✓ Sign in successful! Redirecting...
-            </div>
+<div class="login-container">
 
-            <form id="signinForm">
-                <div class="form-group">
-                    <label for="email">Email or Username</label>
-                    <div class="input-wrapper">
-                        <span class="input-icon">👤</span>
-                        <input 
-                            type="text" 
-                            id="email" 
-                            name="email" 
-                            placeholder="Enter your email or username"
-                            required
-                        >
-                    </div>
-                    <div class="error-message" id="emailError"></div>
-                </div>
+    <div class="login-card">
 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <div class="input-wrapper">
-                        <span class="input-icon">🔒</span>
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password" 
-                            placeholder="Enter your password"
-                            required
-                        >
-                    </div>
-                    <div class="error-message" id="passwordError"></div>
-                </div>
-
-                <div class="remember-forgot">
-                    <div class="remember-me">
-                        <input type="checkbox" id="rememberMe" name="rememberMe">
-                        <label for="rememberMe">Remember me</label>
-                    </div>
-                    <a href="#" class="forgot-password">Forgot password?</a>
-                </div>
-
-                <button type="submit" class="signin-btn" id="signinBtn">
-                    Sign In
-                </button>
-            </form>
-
-            <div class="signup-link">
-                Don't have an account? <a href="#">Sign up here</a>
-            </div>
+        <div class="login-header">
+            <img src="smartmeds-logo.jpg" class="login-logo" alt="SmartMeds Logo">
+            <h2>Welcome Back!</h2>
         </div>
+
+        <form id="signin-form" class="login-form">
+
+            <div class="form-group">
+                <label>Email *</label>
+                <input type="email" id="signin-email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label>Password *</label>
+                <input type="password" id="signin-password" placeholder="Enter password" required>
+            </div>
+
+            <div class="form-group checkbox">
+                <input type="checkbox" id="remember">
+                <label for="remember">Remember me</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+
+        </form>
+
+        <div class="login-footer">
+            <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+        </div>
+
     </div>
 
-    <script>
-        const form = document.getElementById('signinForm');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const signinBtn = document.getElementById('signinBtn');
-        const emailError = document.getElementById('emailError');
-        const passwordError = document.getElementById('passwordError');
-        const successMessage = document.getElementById('successMessage');
-        const rememberMe = document.getElementById('rememberMe');
+</div>
 
-        // Load saved email if "Remember me" was checked
-        window.addEventListener('load', () => {
-            const savedEmail = localStorage.getItem('smartmeds_saved_email');
-            if (savedEmail) {
-                emailInput.value = savedEmail;
-                rememberMe.checked = true;
-            }
-        });
+<script>
+document.getElementById("signin-form").addEventListener("submit", function(e){
+    e.preventDefault();
 
-        // Clear error messages on input
-        emailInput.addEventListener('input', () => {
-            emailError.classList.remove('show');
-            emailError.textContent = '';
-        });
+    let email = document.getElementById("signin-email").value.trim();
+    let password = document.getElementById("signin-password").value.trim();
 
-        passwordInput.addEventListener('input', () => {
-            passwordError.classList.remove('show');
-            passwordError.textContent = '';
-        });
+    let savedUser = JSON.parse(localStorage.getItem("smartmeds_user"));
 
-        // Form submission
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
+    if(!savedUser){
+        alert("No account found! Please sign up first.");
+        return;
+    }
 
-            // Reset errors
-            emailError.classList.remove('show');
-            passwordError.classList.remove('show');
-            emailError.textContent = '';
-            passwordError.textContent = '';
+    if(savedUser.email === email && savedUser.password === password){
+        alert("Login successful! Redirecting...");
+        localStorage.setItem("smartmeds_logged_in", "true");
+        window.location.href = "index.html";
+    } else {
+        alert("Incorrect email or password!");
+    }
+});
+</script>
 
-            const email = emailInput.value.trim();
-            const password = passwordInput.value;
-
-            let isValid = true;
-
-            // Validate email
-            if (!email) {
-                emailError.textContent = 'Email or username is required';
-                emailError.classList.add('show');
-                isValid = false;
-            } else if (email.includes('@') && !isValidEmail(email)) {
-                emailError.textContent = 'Please enter a valid email address';
-                emailError.classList.add('show');
-                isValid = false;
-            }
-
-            // Validate password
-            if (!password) {
-                passwordError.textContent = 'Password is required';
-                passwordError.classList.add('show');
-                isValid = false;
-            } else if (password.length < 6) {
-                passwordError.textContent = 'Password must be at least 6 characters';
-                passwordError.classList.add('show');
-                isValid = false;
-            }
-
-            if (!isValid) return;
-
-            // Show loading state
-            signinBtn.classList.add('loading');
-            signinBtn.innerHTML = '<span class="spinner"></span>Signing in...';
-
-            // Simulate API call
-            setTimeout(() => {
-                // Save email if "Remember me" is checked
-                if (rememberMe.checked) {
-                    localStorage.setItem('smartmeds_saved_email', email);
-                } else {
-                    localStorage.removeItem('smartmeds_saved_email');
-                }
-
-                // Show success message
-                successMessage.classList.add('show');
-
-                // Simulate redirect after 1.5 seconds
-                setTimeout(() => {
-                    // In a real app, this would redirect to dashboard
-                    alert('Sign in successful! In a real app, you would be redirected to the dashboard.');
-                    
-                    // Reset form
-                    form.reset();
-                    signinBtn.classList.remove('loading');
-                    signinBtn.textContent = 'Sign In';
-                    successMessage.classList.remove('show');
-                }, 1500);
-            }, 1500);
-        });
-
-        // Email validation helper
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
-        // Forgot password link
-        document.querySelector('.forgot-password').addEventListener('click', (e) => {
-            e.preventDefault();
-            alert('Forgot password functionality would redirect to password reset page');
-        });
-
-        // Sign up link
-        document.querySelector('.signup-link a').addEventListener('click', (e) => {
-            e.preventDefault();
-            alert('Sign up functionality would redirect to registration page');
-        });
-    </script>
 </body>
 </html>
+
