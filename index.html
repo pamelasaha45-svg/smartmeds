@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartMeds - Medicine Reminder & Tracker</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js"></script>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
 
     <script>
       const firebaseConfig = {
@@ -23,7 +25,6 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
     </script>
-
 </head>
 <body>
     <!-- Login Page -->
@@ -31,14 +32,14 @@
         <div class="login-container">
             <div class="login-card">
                 <div class="login-header">
-                    <img src="./smartmeds-logo.jpg" alt="SmartMeds Logo" class="login-logo">
+                    <img src="smartmeds-logo.jpg" alt="SmartMeds Logo" class="login-logo">
                     <h1>SmartMeds</h1>
                     <p>Your Personal Medicine Reminder</p>
                 </div>
                 <form id="login-form" class="login-form">
                     <div class="form-group">
-                        <label for="email">Email or Username</label>
-                        <input type="text" id="email" placeholder="Enter your email" required>
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Enter your email" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
@@ -48,10 +49,10 @@
                         <input type="checkbox" id="remember" checked>
                         <label for="remember">Remember me</label>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                    <button type="submit" class="btn btn-primary btn-full">Login</button>
                 </form>
                 <div class="login-footer">
-                    <p>Don't have an account? <a href="#signup">Sign Up</a></p>
+                    <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
                 </div>
             </div>
         </div>
@@ -69,15 +70,14 @@
                 <a href="#dashboard" class="nav-link active" data-page="dashboard">Dashboard</a>
                 <a href="#medicines" class="nav-link" data-page="medicines">Medicines</a>
                 <a href="#reminders" class="nav-link" data-page="reminders">Reminders</a>
-                <a href="#family" class="nav-link" data-page="family">Family & Doctors</a>
+                <a href="#family" class="nav-link" data-page="family">Family &amp; Doctors</a>
                 <a href="#profile" class="nav-link" data-page="profile">Profile</a>
             </nav>
             <div class="header-right">
                 <div class="user-menu">
-                    <div class="user-avatar" id="user-avatar">JD</div>
+                    <div class="user-avatar" id="user-avatar">U</div>
                     <div class="dropdown-menu">
                         <a href="#profile">My Profile</a>
-                        <a href="#settings">Settings</a>
                         <button id="logout-btn" class="logout-btn">Logout</button>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
         </header>
 
         <!-- Dashboard Page -->
-        <div id="dashboard" class="page ">
+        <div id="dashboard" class="page">
             <div class="page-header">
                 <h2>Dashboard</h2>
                 <p>Welcome back, <span id="dashboard-username">User</span>!</p>
@@ -96,7 +96,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h3>Today's Medicines</h3>
-                        <a href="#medicines" class="btn btn-sm btn-primary">Add Medicine</a>
+                        <a href="#medicines" class="btn btn-sm btn-primary" data-page="medicines">Add Medicine</a>
                     </div>
                     <div id="today-medicines" class="medicines-list">
                         <p class="empty-state">No medicines added yet</p>
@@ -126,7 +126,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h3>Upcoming Reminders</h3>
-                        <a href="#reminders" class="btn btn-sm btn-primary">View All</a>
+                        <a href="#reminders" class="btn btn-sm btn-primary" data-page="reminders">View All</a>
                     </div>
                     <div id="upcoming-reminders" class="reminders-list">
                         <p class="empty-state">No reminders set yet</p>
@@ -136,8 +136,8 @@
                 <!-- Family Contacts -->
                 <div class="card">
                     <div class="card-header">
-                        <h3>Family & Doctors</h3>
-                        <a href="#family" class="btn btn-sm btn-primary">Manage</a>
+                        <h3>Family &amp; Doctors</h3>
+                        <a href="#family" class="btn btn-sm btn-primary" data-page="family">Manage</a>
                     </div>
                     <div id="dashboard-contacts" class="contacts-list">
                         <p class="empty-state">No contacts added yet</p>
@@ -150,7 +150,7 @@
         <div id="medicines" class="page">
             <div class="page-header">
                 <h2>My Medicines</h2>
-                <a href="#medicines-add" class="btn btn-primary">+ Add Medicine</a>
+                <a href="#medicines-add" class="btn btn-primary" data-page="medicines-add">+ Add Medicine</a>
             </div>
 
             <div id="medicines-list" class="medicines-grid">
@@ -162,13 +162,13 @@
         <div id="medicines-add" class="page">
             <div class="page-header">
                 <h2 id="medicine-form-title">Add Medicine</h2>
-                <a href="#medicines" class="btn btn-secondary">Back</a>
+                <a href="#medicines" class="btn btn-secondary" data-page="medicines">Back</a>
             </div>
 
             <div class="form-group">
-               <label for="medicine-image">Add Medicine Strip Image</label>
-                  <input type="file" id="medicine-image" accept="image/*" capture="environment">
-                    <img id="medicine-preview" src="" alt="Preview" style="display:none; width:120px; margin-top:10px; border-radius:8px;">
+                <label for="medicine-image">Add Medicine Strip Image</label>
+                <input type="file" id="medicine-image" accept="image/*" capture="environment">
+                <img id="medicine-preview" src="" alt="Preview" style="display:none; width:120px; margin-top:10px; border-radius:8px;">
             </div>
 
             <div class="form-card">
@@ -178,32 +178,31 @@
                         <input type="text" id="med-name" placeholder="e.g., Paracetamol" required>
                     </div>
 
-            <div class="form-group">
-                <label for="medicine-color">Select Medicine Color</label>
-                    <select id="medicine-color" name="medicine-color" required>
-                    <option value="">-- Select Color --</option>
-                    <option value="red" style="color: red;">🔴 Red</option>
-                    <option value="blue" style="color: blue;">🔵 Blue</option>
-                    <option value="green" style="color: green;">🟢 Green</option>
-                    <option value="yellow" style="color: goldenrod;">🟡 Yellow</option>
-                    <option value="orange" style="color: orange;">🟠 Orange</option>
-                    <option value="purple" style="color: purple;">🟣 Purple</option>
-                    <option value="white" style="color: gray;">⚪ White</option>
-                    <option value="brown" style="color: brown;">🟤 Brown</option>
-                    <option value="black" style="color: black;">⚫ Black</option>
-                    </select>
-            </div>
+                    <div class="form-group">
+                        <label for="medicine-color">Select Medicine Color</label>
+                        <select id="medicine-color" name="medicine-color" required>
+                            <option value="">-- Select Color --</option>
+                            <option value="red">Red</option>
+                            <option value="blue">Blue</option>
+                            <option value="green">Green</option>
+                            <option value="yellow">Yellow</option>
+                            <option value="orange">Orange</option>
+                            <option value="purple">Purple</option>
+                            <option value="white">White</option>
+                            <option value="brown">Brown</option>
+                            <option value="black">Black</option>
+                        </select>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="med-shape">Shape</label>
-                            <select id="med-shape">
-                                <option value="round">Round</option>
-                                <option value="oval">Oval</option>
-                                <option value="capsule">Capsule</option>
-                                <option value="square">Square</option>
-                                <option value="tablet">Tablet</option>
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label for="med-shape">Shape</label>
+                        <select id="med-shape">
+                            <option value="round">Round</option>
+                            <option value="oval">Oval</option>
+                            <option value="capsule">Capsule</option>
+                            <option value="square">Square</option>
+                            <option value="tablet">Tablet</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -240,13 +239,12 @@
 
                     <div class="form-group">
                         <label for="medicine-time">Select Time</label>
-                            <input type="time" id="medicine-time" name="medicine-time" required>
-                            <select id="ampm" name="ampm" required>
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                           </select>
+                        <input type="time" id="medicine-time" name="medicine-time" required>
+                        <select id="ampm" name="ampm" required>
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
                     </div>
-
 
                     <div class="form-group">
                         <label for="med-description">Description</label>
@@ -255,7 +253,7 @@
 
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">Save Medicine</button>
-                        <a href="#medicines" class="btn btn-secondary">Cancel</a>
+                        <a href="#medicines" class="btn btn-secondary" data-page="medicines">Cancel</a>
                     </div>
                 </form>
             </div>
@@ -277,7 +275,7 @@
         <!-- Family & Doctors Page -->
         <div id="family" class="page">
             <div class="page-header">
-                <h2>Family & Doctors</h2>
+                <h2>Family &amp; Doctors</h2>
             </div>
 
             <div class="tabs">
@@ -289,7 +287,7 @@
             <div id="family-members" class="tab-content active">
                 <div class="tab-header">
                     <h3>Family Members</h3>
-                    <a href="#family-add-member" class="btn btn-primary">+ Add Member</a>
+                    <a href="#family-add-member" class="btn btn-primary" data-page="family-add-member">+ Add Member</a>
                 </div>
                 <div id="family-members-list" class="contacts-grid">
                     <p class="empty-state">No family members added yet.</p>
@@ -300,7 +298,7 @@
             <div id="doctors" class="tab-content">
                 <div class="tab-header">
                     <h3>Healthcare Providers</h3>
-                    <a href="#family-add-doctor" class="btn btn-primary">+ Add Doctor</a>
+                    <a href="#family-add-doctor" class="btn btn-primary" data-page="family-add-doctor">+ Add Doctor</a>
                 </div>
                 <div id="doctors-list" class="contacts-grid">
                     <p class="empty-state">No doctors added yet.</p>
@@ -312,7 +310,7 @@
         <div id="family-add-member" class="page">
             <div class="page-header">
                 <h2>Add Family Member</h2>
-                <a href="#family" class="btn btn-secondary">Back</a>
+                <a href="#family" class="btn btn-secondary" data-page="family">Back</a>
             </div>
 
             <div class="form-card">
@@ -337,7 +335,7 @@
 
                     <div class="form-group">
                         <label for="fm-phone">Phone Number</label>
-                        <input type="tel" id="fm-phone" placeholder="+1 (555) 000-0000">
+                        <input type="tel" id="fm-phone" placeholder="+91 00000 00000">
                     </div>
 
                     <div class="form-group">
@@ -352,7 +350,7 @@
 
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">Add Member</button>
-                        <a href="#family" class="btn btn-secondary">Cancel</a>
+                        <a href="#family" class="btn btn-secondary" data-page="family">Cancel</a>
                     </div>
                 </form>
             </div>
@@ -362,7 +360,7 @@
         <div id="family-add-doctor" class="page">
             <div class="page-header">
                 <h2>Add Doctor</h2>
-                <a href="#family" class="btn btn-secondary">Back</a>
+                <a href="#family" class="btn btn-secondary" data-page="family">Back</a>
             </div>
 
             <div class="form-card">
@@ -379,7 +377,7 @@
 
                     <div class="form-group">
                         <label for="doc-phone">Phone Number</label>
-                        <input type="tel" id="doc-phone" placeholder="+1 (555) 000-0000">
+                        <input type="tel" id="doc-phone" placeholder="+91 00000 00000">
                     </div>
 
                     <div class="form-group">
@@ -394,7 +392,7 @@
 
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">Add Doctor</button>
-                        <a href="#family" class="btn btn-secondary">Cancel</a>
+                        <a href="#family" class="btn btn-secondary" data-page="family">Cancel</a>
                     </div>
                 </form>
             </div>
@@ -409,12 +407,11 @@
             <div class="profile-container">
                 <div class="profile-card">
                     <div class="profile-header">
-                        <div class="profile-avatar" id="profile-avatar">JD</div>
+                        <div class="profile-avatar" id="profile-avatar">U</div>
                         <div class="profile-info">
-                            <h3 id="profile-name">John Doe</h3>
-                            <p id="profile-email">john@example.com</p>
+                            <h3 id="profile-name">User Name</h3>
+                            <p id="profile-email">user@example.com</p>
                         </div>
-                        <a href="#profile-edit" class="btn btn-primary">Edit Profile</a>
                     </div>
 
                     <div class="profile-section">
@@ -453,7 +450,7 @@
         <div id="profile-edit" class="page">
             <div class="page-header">
                 <h2>Edit Profile</h2>
-                <a href="#profile" class="btn btn-secondary">Back</a>
+                <a href="#profile" class="btn btn-secondary" data-page="profile">Back</a>
             </div>
 
             <div class="form-card">
@@ -470,7 +467,7 @@
 
                     <div class="form-group">
                         <label for="prof-phone">Phone Number</label>
-                        <input type="tel" id="prof-phone" placeholder="+1 (555) 000-0000">
+                        <input type="tel" id="prof-phone" placeholder="+91 00000 00000">
                     </div>
 
                     <div class="form-group">
@@ -500,32 +497,12 @@
 
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">Save Changes</button>
-                        <a href="#profile" class="btn btn-secondary">Cancel</a>
+                        <a href="#profile" class="btn btn-secondary" data-page="profile">Cancel</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js"></script>
-
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAMyzabZU5viAxaOg-uIwMZmYMDsgO71Ss",
-    authDomain: "smartmeds-1.firebaseapp.com",
-    projectId: "smartmeds-1",
-    storageBucket: "smartmeds-1.firebasestorage.app",
-    messagingSenderId: "169671530750",
-    appId: "1:169671530750:web:7e6292d0c34a8cf3edadaf"
-  };
-
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
-</script>
 
     <script src="app.js"></script>
 </body>
